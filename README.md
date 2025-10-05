@@ -65,7 +65,8 @@ insmod venom.ko
 
 - And let the venom spread 
 
-<img width="1556" height="303" alt="image" src="https://github.com/user-attachments/assets/82250e22-c4c2-48a4-80f0-d9bed95e5778" />
+<img width="1149" height="563" alt="Screenshot 2025-10-05 091005" src="https://github.com/user-attachments/assets/484549a0-43c1-48af-9abc-0f10170ddf7d" />
+
 
 
 ## 📚 Documentation
@@ -127,6 +128,37 @@ flowchart TD
   deliver --> stop 
 ```
 
+
+### Secure Logging System
+
+Venom implements a **stealth logging mechanism** that operates completely independently from kernel's `dmesg`/`printk`. This prevents attackers from discovering operational details through standard kernel log inspection.
+
+### How it works
+
+Instead of using `printk()` which writes to the kernel ring buffer (visible via `dmesg`), Venom uses a custom logging system that:
+
+- Writes to a hidden file location: `/var/tmp/.X11-cache` (disguised as a system cache file)
+- Uses mutex-protected writes to prevent race conditions
+- Provides severity levels with visual indicators (✓ ✗ ⚠ ☠)
+- Completely bypasses kernel logging infrastructure
+
+### Log Levels
+
+| Symbol | Level | Description |
+|--------|-------|-------------|
+| ✓ | INFO | Normal operations, successful hooks |
+| ⚠ | WARN | Suspicious activity detected |
+| ✗ | ERROR | Hook failures, errors |
+| ☠ | CRIT | Critical failures, security breaches |
+
+### Viewing Logs
+
+**Plain text:**
+```bash
+sudo cat /var/tmp/.X11-cache
+```
+
+- The file `/var/tmp/.X11-cache` is also hidden from the `getdents` hook 
 
 ---
 
