@@ -52,7 +52,9 @@
 
 * <span style="color:#70a1ff">Packet receive path interception</span>
   * Concept: intercepts raw packet receive paths (AF_PACKET/TPACKET) to filter or observe packets delivered to userland captures.
- 
+
+* <span style="color:#70a1ff">Mounting denied</span>
+  * Concept: mounting files on `/root` is not allowed also moving mount is denied. 
 
 ## Installation
 
@@ -88,6 +90,8 @@ Browse the docs: [docs](./docs)
 | `__x64_sys_read` | Kernel entry for `read(2)` -> reading from files, pipes, sockets | Intercept reads to protect ftrace and internal state (detect or sanitise reads that would reveal Venom internals) | Auditors should check for modified read return values, timing anomalies, or unusual reads on /proc devices. |
 | `__x64_sys_getdents64` | Readdir-like kernel call used by `readdir(3)`/`ls` to enumerate directory entries | Commonly abused by rootkits to hide files/dirs; Venom hooks it to manage/hide its artifacts (and detect other hide attempts) | Look for filtered/modified directory listings, discrepancies between inode counts and listed entries, or processes that repeatedly call getdents. |
 | `__x64_sys_getdents` | Older 32-bit getdents (kept for completeness on some kernels) | Same high-level intent as getdents64 — intercepts directory enumeration where applicable | Same as above; include 32-bit compatibility layers in audits. |
+| `__x64_sys_mount` | Kernel entry for `mount(2)` → attach filesystems / bind mounts | Intercept mount operations to observe, filter, or influence mount visibility and propagation behavior (affects what appears in mount tables) | Watch for missing or inconsistent entries in `/proc/mounts` and `/proc/self/mountinfo`, unexpected mount flags, or transient mounts. Correlate with kernel logs and external snapshots. |
+| `__x64_sys_move_mount` | Kernel entry for moving mounts / changing mount namespaces | Intercept move_mount to detect or influence moves between mount points/namespaces (used to hide files via transient or namespaced mounts) | Look for mount points that appear/disappear quickly, differences between `findmnt` and `/proc/self/mountinfo`, or mounts present in memory but absent from listing tools. | 
 | `__x64_sys_init_module` | Loads a kernel module into the running kernel | Hooked to block/monitor insertion of other kernel modules (prevents competing kits or defensive drivers from loading) | Unexpected failures when inserting legitimate modules, suspicious denials in dmesg, or missing module list entries are red flags. |
 | `__x64_sys_finit_module` | `init_module` variant that takes a file descriptor (modern module loading) | Hooked for the same reason as `init_module` — control module insertion paths that use fd-based loading | Inspect audit logs for failed `finit_module` syscalls; compare `lsmod` output vs. attempted loads. |
 | `__x64_sys_delete_module` | Unloads a kernel module from the running kernel | Hooked to block deletion of Venom (protects against removal) or to detect attempts to remove other modules | Look for failed `delete_module` syscalls and modules that cannot be removed; check kthread activity and signal handling around unload operations. |
