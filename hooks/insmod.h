@@ -15,7 +15,6 @@
  * Author: Trevohack 
  */
 
-
 #ifndef INSMOD_H
 #define INSMOD_H
 
@@ -96,7 +95,7 @@ notrace static asmlinkage long hooked_init_module(const struct pt_regs *regs) {
     }
     
 
-    printk(KERN_WARNING "[VENOM] Blocked unauthorized module load attempt (init_module) from PID %d UID %d\n", current->pid, current_uid().val);
+    TLOG_WARN("[VENOM] Blocked unauthorized module load attempt (init_module) from PID %d UID %d\n", current->pid, current_uid().val);
     
     return -EPERM; 
 }
@@ -129,7 +128,7 @@ notrace static asmlinkage long hooked_finit_module(const struct pt_regs *regs) {
     }
     
 
-    // printk(KERN_WARNING "[VENOM] Blocked unauthorized module load attempt (finit_module) from PID %d UID %d: %s\n", current->pid, current_uid().val, filename[0] ? filename : "unknown");
+    TLOG_WARN("[VENOM] Blocked unauthorized module load attempt (finit_module) from PID %d UID %d: %s\n", current->pid, current_uid().val, filename[0] ? filename : "unknown");
     
     return -EPERM;  
 }
@@ -143,7 +142,7 @@ notrace static asmlinkage long hooked_delete_module(const struct pt_regs *regs) 
 
     if (name_user && strncpy_from_user(module_name, name_user, sizeof(module_name) - 1) > 0) {
         if (is_module_allowed(module_name)) {
-            printk(KERN_WARNING "[VENOM] Blocked attempt to unload protected module: %s from PID %d\n", module_name, current->pid);
+            TLOG_WARN("[VENOM] Blocked attempt to unload protected module: %s from PID %d\n", module_name, current->pid);
             return -EPERM;
         }
     }
