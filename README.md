@@ -177,8 +177,7 @@ sudo cat /var/tmp/.X11-cache
 
 ## Finishing Touches
 
-Venom is not a weapon — it’s a **research & educational project**.  
-Everything here is designed to help defenders, students, and researchers understand how kernel-level stealth techniques have historically worked, so they can better **detect, analyze, and defend** against them.
+Venom is not a weapon it’s a **research & educational project**.  
 
 ✔️ **Stay Responsible**  
 Use this content only in safe, legal environments you fully control 
@@ -192,6 +191,6 @@ This repo is about knowledge-sharing, not misuse. Always respect the boundaries 
 ---
 
 > **Closing note:**  
-> Security is about understanding *both sides* of the coin the offensive techniques and the defensive countermeasures. Venom exists so defenders can **see what’s possible** and **build stronger protections** in the future.  
+> Spread the venom 
 
 ---
