@@ -54,7 +54,7 @@ static int fh_resolve_hook_address(struct ftrace_hook *hook)
     hook->address = kallsyms_lookup_name(hook->name);
     
     if (!hook->address) {
-        printk(KERN_DEBUG "[BlueDefense] unresolved symbol: %s\n", hook->name);
+        printk(KERN_DEBUG "[VENOM] unresolved symbol: %s\n", hook->name);
         return -ENOENT;
     }
 
@@ -96,13 +96,12 @@ static int fh_install_hook(struct ftrace_hook *hook)
 
     err = ftrace_set_filter_ip(&hook->ops, hook->address, 0, 0);
     if (err) {
-        printk(KERN_DEBUG "[BlueDefense] ftrace_set_filter_ip() failed: %d\n", err);
+        printk(KERN_DEBUG "[VENOM] ftrace_set_filter_ip() failed: %d\n", err);
         return err;
     }
 
     err = register_ftrace_function(&hook->ops);
     if (err) {
-        printk(KERN_DEBUG "[BlueDefense] register_ftrace_function() failed: %d\n", err);
         ftrace_set_filter_ip(&hook->ops, hook->address, 1, 0);
         return err;
     }
@@ -116,12 +115,12 @@ static void fh_remove_hook(struct ftrace_hook *hook)
 
     err = unregister_ftrace_function(&hook->ops);
     if (err) {
-        printk(KERN_DEBUG "[BlueDefense] unregister_ftrace_function() failed: %d\n", err);
+        printk(KERN_DEBUG "[VENOM] unregister_ftrace_function() failed: %d\n", err);
     }
 
     err = ftrace_set_filter_ip(&hook->ops, hook->address, 1, 0);
     if (err) {
-        printk(KERN_DEBUG "[BlueDefense] ftrace_set_filter_ip() failed: %d\n", err);
+        printk(KERN_DEBUG "[VENOM] ftrace_set_filter_ip() failed: %d\n", err);
     }
 }
 
