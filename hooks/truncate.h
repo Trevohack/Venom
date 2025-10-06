@@ -38,7 +38,7 @@ notrace asmlinkage long hook_ftruncate(const struct pt_regs *regs)
     unsigned long length = (unsigned long)regs->si;
 
 
-    TLOG_INF("[VENOM] HOOKED FTRUNCATE\n);
+    TLOG_INF("[VENOM] HOOKED FTRUNCATE\n");
     TLOG_INF("[VENOM] File Descriptor: %d\n", fd);
     TLOG_INF("[VENOM] Length: %lu\n", length);
 
