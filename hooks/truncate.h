@@ -24,7 +24,7 @@ notrace asmlinkage long hook_truncate(const struct pt_regs *regs)
         kd[0] = '\0';
     
 
-    TLOG_INF("[VENOM] HOOKED TRUNCATE\n);
+    TLOG_INF("[VENOM] HOOKED TRUNCATE\n");
     TLOG_INF("[VENOM] File Descriptor: %d\n", fd);
     TLOG_INF("[VENOM] Length: %lu\n", length);
 
