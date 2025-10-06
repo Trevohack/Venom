@@ -25,12 +25,6 @@ asmlinkage long hook_truncate(const struct pt_regs *regs)
         kd[0] = '\0';
 
 
-    printk(KERN_INFO "====================================================\n");
-    printk(KERN_INFO "HACKVERSE HOOKED TRUNCATE\n");
-    //printk(KERN_INFO "@0xTrevo @Devil0x1\n");
-    printk(KERN_INFO "File: %s\n", kpath);
-    printk(KERN_INFO "Length: %lu\n", length);
-    printk(KERN_INFO "====================================================\n");
 
     return -EPERM; // this returns an eror if someone tries to truncate a file this will be called for a reason we can check the docs for more type of this hehe
 }
@@ -41,12 +35,6 @@ asmlinkage long hook_ftruncate(const struct pt_regs *regs)
     int fd = (int)regs->di;
     unsigned long length = (unsigned long)regs->si;
 
-    printk(KERN_INFO "====================================================\n");
-    printk(KERN_INFO "HACKVERSE HOOKED FTRUNCATE\n");
-    //printk(KERN_INFO "@0xTrevo @Devil0x1\n");
-    printk(KERN_INFO "File Descriptor: %d\n", fd);
-    printk(KERN_INFO "Length: %lu\n", length);
-    printk(KERN_INFO "====================================================\n");
 
     return -EPERM;
 }
