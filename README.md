@@ -12,7 +12,7 @@
 --- 
 
 > [!Important]
-> Venom — educational only. This repository explains concepts and historic categories of kernel/userland malware so defenders can recognize, study, and detect them. Use only in legal, controlled environments (isolated VMs, CTF labs you own, or instructor-approved training).
+> Venom — An advance loadable kernel module, strictly for educational purposes only. 
 
 
 ## Features
@@ -54,7 +54,13 @@
   * Concept: intercepts raw packet receive paths (AF_PACKET/TPACKET) to filter or observe packets delivered to userland captures.
 
 * <span style="color:#70a1ff">Mounting denied</span>
-  * Concept: mounting files on `/root` is not allowed also moving mount is denied. 
+  * Concept: mounting files on `/root` is not allowed also moving mount is denied.
+ 
+* <span style="color:#70a1ff">It protects essential files and folders that can possibly find, patch or break the LKM</span>
+  * Concept: Hooks `openat`, `renameat`, `unlinkat` to monitor changes, or block specific actions to protected files. 
+
+* <span style="color:#70a1ff">Logs network activity</span>
+  * Concept: Hooks `socket` to log if new sockets open. 
 
 ## Installation
 
@@ -92,6 +98,12 @@ Browse the docs: [docs](./docs)
 | `__x64_sys_getdents` | Older 32-bit getdents (kept for completeness on some kernels) | Same high-level intent as getdents64 — intercepts directory enumeration where applicable | Same as above; include 32-bit compatibility layers in audits. |
 | `__x64_sys_mount` | Kernel entry for `mount(2)` → attach filesystems / bind mounts | Intercept mount operations to observe, filter, or influence mount visibility and propagation behavior (affects what appears in mount tables) | Watch for missing or inconsistent entries in `/proc/mounts` and `/proc/self/mountinfo`, unexpected mount flags, or transient mounts. Correlate with kernel logs and external snapshots. |
 | `__x64_sys_move_mount` | Kernel entry for moving mounts / changing mount namespaces | Intercept move_mount to detect or influence moves between mount points/namespaces (used to hide files via transient or namespaced mounts) | Look for mount points that appear/disappear quickly, differences between `findmnt` and `/proc/self/mountinfo`, or mounts present in memory but absent from listing tools. | 
+| `__x64_sys_openat`        | Open a file relative to a directory file descriptor (openat) — used to open files, device nodes, /proc entries, etc. | Observe or enforce policies when sensitive files or device nodes are opened (e.g., reads of kernel symbols, debugfs, proc entries). Useful for logging intent and blocking accidental exposure in a lab/analysis context. | Unexpected additional overhead on open calls for sensitive paths; unusual access patterns to `/proc` or `/sys`; presence of extra permission/mtime checks; anomalous caller stack traces. |
+| `__x64_sys_unlinkat`      | Remove (unlink) a file or directory entry relative to a dirfd (unlinkat / rmdir-like effects).                       | Monitor or alert on deletion attempts of sensitive files (audit trails, kernel maps, forensic artifacts) to detect tampering or cleanup behavior in a testbed.                                                         | Sudden or repeated unlink attempts to kernel-related files (e.g., logs, dumps); unlink from unexpected processes; mismatches between file metadata and observed delete timing.           |
+| `__x64_sys_renameat`      | Rename or move filesystem entries relative to directory fds (renameat).                                              | Track attempts to move/rename sensitive files (e.g., moving a log away before exfiltration) or to hide evidence by changing paths; useful for generating audit records.                                               | Renames of kernel or log-related files; renames originating from non-privileged users/processes; renames that coincide with other cleanup operations (truncate/unlink).             |
+| `__x64_sys_truncate`      | Truncate a file to a specified length (truncate / ftruncate) — used to shrink/clear files.                             | Detect or log attempts to zero-out or truncate audit logs, kernel dumps, or other forensic artifacts as part of tampering or cleanup behavior in an analysis environment.                                               | Unexpected truncation of logs or binary files; truncation from unusual processes or at unusual times; file size changes with no corresponding legitimate activity.                 |
+| `__x64_sys_socket`        | Create an endpoint for network communication (socket) — used for TCP/UDP/RAW sockets.                                 | Observe socket creation that may indicate outbound channels or staging of exfiltration; correlate socket creation with process identity and recent file/system activity for incident analysis.                          | Sudden creation of raw or unusual socket types; unexpected sockets opened by non-networking processes; correlation with suspicious file access or process privilege changes.         |
+| `__x64_sys_kexec_load`    | Load a new kernel (kexec) into memory for rebooting into a different kernel image.                                    | Alert on or log attempts to load a new kernel image (kexec) — can indicate advanced persistence or attempts to bypass runtime controls in an experiment/testbed.                                                       | Unscheduled or unauthorized kexec_load attempts; loading kernel images from unexpected paths; absence of normal admin-level invocation patterns before kexec activity.            |
 | `__x64_sys_init_module` | Loads a kernel module into the running kernel | Hooked to block/monitor insertion of other kernel modules (prevents competing kits or defensive drivers from loading) | Unexpected failures when inserting legitimate modules, suspicious denials in dmesg, or missing module list entries are red flags. |
 | `__x64_sys_finit_module` | `init_module` variant that takes a file descriptor (modern module loading) | Hooked for the same reason as `init_module` — control module insertion paths that use fd-based loading | Inspect audit logs for failed `finit_module` syscalls; compare `lsmod` output vs. attempted loads. |
 | `__x64_sys_delete_module` | Unloads a kernel module from the running kernel | Hooked to block deletion of Venom (protects against removal) or to detect attempts to remove other modules | Look for failed `delete_module` syscalls and modules that cannot be removed; check kthread activity and signal handling around unload operations. |
@@ -188,9 +200,17 @@ Pull requests that improve documentation, defensive detection notes, or historic
 ✔️ **Respect the Ecosystem**  
 This repo is about knowledge-sharing, not misuse. Always respect the boundaries of ethical hacking and your local laws. When in doubt, **don’t run it on production systems**.
 
+## References & Special Thanks
+
+- [Diamorphine](https://github.com/m0nad/Diamorphine) - old kit but greatest inspiration
+- [TheXcellerator](https://xcellerator.github.io/posts/linux_rootkits_01/) - learnt about LKMs first, mad respect
+- [MatheuZSecurity](https://github.com/MatheuZSecurity) - inspiration, huge shout out
+- [Kvoid](https://github.com/carloslack/KoviD) - Goat
+
+
 ---
 
 > **Closing note:**  
-> Spread the venom 
+> Spread the venom. Leave no trace. Own the silence. 
 
----
+--- 
