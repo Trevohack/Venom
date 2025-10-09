@@ -9,9 +9,8 @@ notrace static asmlinkage long hooked_socket(const struct pt_regs *regs) {
     int family = (int)regs->di;
     int type = (int)regs->si;
     
-
     if (type == SOCK_RAW) {
-        SLOG_WARN("[VENOM] Socket created by PID %d UID %d",  current->pid, current_uid().val);
+        TLOG_WARN("[VENOM] Socket created by PID %d UID %d",  current->pid, current_uid().val);
     }
     
     return orig_socket(regs);
