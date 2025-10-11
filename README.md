@@ -17,50 +17,22 @@
 
 ## Features
 
-* <span style="color:#ffb86b">Output interception</span>
-  * Concept: intercepts kernel write paths to monitor or protect tracing/logging state (protect ftrace).
+* **Output interception** — watches kernel write paths to protect or hide tracing/logs.
+* **Input interception** — inspects reads to stop leaks of Venom internals.
+* **Dir filtering (64-bit)** — hides files/dirs from normal `ls`/readdir views.
+* **Dir filtering (32-bit/compat)** — same as above for 32-bit compatibility calls.
+* **Module load control** — watches/blocks module insertions to stop rivals.
+* **FD-based module load** — monitors modern (fd) module loads the same way.
+* **Module unload protection** — prevents or logs attempts to remove modules.
+* **Signal control** — intercepts signals to stop forced kills or meddling.
+* **Device/ioctl protection** — blocks/inspects ioctl probes from forensic tools.
+* **TCP /proc hooks** — filters `/proc/net/tcp` and `/proc/net/tcp6` to hide endpoints.
+* **UDP /proc hooks** — filters `/proc/net/udp` and `/proc/net/udp6`.
+* **Packet receive interception** — filters raw packet capture paths (AF_PACKET/TPACKET).
+* **Mount blocking** — denies unwanted mounts/moves to keep things hidden.
+* **FS protection hooks** — hooks `openat`/`renameat`/`unlinkat` to guard critical files.
+* **Socket logging** — logs new sockets (watch outbound channels).
 
-* <span style="color:#ffb86b">Input interception</span>
-  * Concept: intercepts kernel read paths to monitor or sanitize reads that might reveal internal state (protect ftrace).
-
-* <span style="color:#70a1ff">Directory enumeration filtering (64-bit)</span>
-  * Concept: filters directory listings to omit files/directories from ordinary enumeration (hide directories).
-
-* <span style="color:#70a1ff">Directory enumeration filtering (32-bit/compat)</span>
-  * Concept: same high-level role as getdents64 for compatibility layers — intercepts directory listing calls.
-
-* <span style="color:#b39cff">Module load monitoring / control</span>
-  * Concept: observes or blocks attempts to insert kernel modules (used to detect or prevent competing/intrusive modules).
-
-* <span style="color:#b39cff">FD-based module load monitoring</span>
-  * Concept: monitors file-descriptor based module loads (modern module insertion path) for the same protective purpose.
-
-* <span style="color:#b39cff">Module unload monitoring / protection</span>
-  * Concept: watches or intercepts module removal attempts (protects the running module or detects tampering).
-
-* <span style="color:#7bed9f">Signal interception / control</span>
-  * Concept: intercepts signal delivery paths to observe, block, or handle attempts to terminate or signal components.
-
-* <span style="color:#ffa6c9">Device control / protection</span>
-  * Concept: intercepts ioctl calls to device drivers (used to monitor or limit probes from forensic/protection tooling).
-
-* <span style="color:#70a1ff">TCP /proc rendering hooks</span>
-  * Concept: alters or filters TCP socket listings shown via /proc/net/tcp and /proc/net/tcp6 (used to conceal endpoints).
-
-* <span style="color:#70a1ff">UDP /proc rendering hooks</span>
-  * Concept: alters or filters UDP socket listings shown via /proc/net/udp and /proc/net/udp6.
-
-* <span style="color:#70a1ff">Packet receive path interception</span>
-  * Concept: intercepts raw packet receive paths (AF_PACKET/TPACKET) to filter or observe packets delivered to userland captures.
-
-* <span style="color:#70a1ff">Mounting denied</span>
-  * Concept: mounting files on `/root` is not allowed also moving mount is denied.
- 
-* <span style="color:#70a1ff">It protects essential files and folders that can possibly find, patch or break the LKM</span>
-  * Concept: Hooks `openat`, `renameat`, `unlinkat` to monitor changes, or block specific actions to protected files. 
-
-* <span style="color:#70a1ff">Logs network activity</span>
-  * Concept: Hooks `socket` to log if new sockets open. 
 
 ## Installation
 
@@ -81,42 +53,12 @@ insmod venom.ko
 
 The `docs` folder contains the project's design and reference material. Quick links:
 
-- [Syscall Hooks (overview)](./docs/syscall_hooked.md) — which hooks are monitored and why (non-operational)  
+- [Syscall Hooks (overview)](./docs/syscalls.md) — which hooks are monitored and why (non-operational)  
 - [Diagrams](./docs) — Flow and structure diagrams
 - [Detection](./docs/detection) — defensive signals, suggested audit checks, and safe test advice
 
 Browse the docs: [docs](./docs)
 
-### How Venom Works? 
-
-```mermaid
-flowchart TD
-  start([Start / Module init])
-  conf(["Load configuration: hidden ports, IP markers, patterns"])
-  install(["Install hook wrappers: seq_show, tpacket_rcv, ioctl, kill, ..."])
-  active(["Hooks active"])
-  eventa(["Userland enumeration: read /proc/net/tcp"])
-  hookcheck{Entry matches hidden criteria?}
-  skip(["Filter / Skip entry - hidden from userland"])
-  pass(["Pass-through - normal rendering"])
-  packetin(["Packet arrives (skb)"])
-  packetcheck{Port or IP match?}
-  drop(["Drop packet - suppressed from host capture"])
-  deliver(["Deliver packet to consumers"])
-  stop([Module idle / waiting])
-
-  start --> conf --> install --> active
-  active --> eventa --> hookcheck
-  hookcheck -->|Yes| skip
-  hookcheck -->|No| pass
-  active --> packetin --> packetcheck
-  packetcheck -->|Yes| drop
-  packetcheck -->|No| deliver
-  pass --> stop
-  skip --> stop
-  drop --> stop
-  deliver --> stop 
-```
 
 ## Finishing Touches
 
