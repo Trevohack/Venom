@@ -3,7 +3,7 @@
 
 ```mermaid
 graph TB
-  subgraph Userland
+  subgraph Userland 
     U["User tools: ps / ls / ss / netstat / tcpdump / strace"]
   end
 
@@ -60,7 +60,6 @@ graph TB
 
 
 
-### Added detection notes for the new hooks (short & practical)
 
 * **`pread64` / `pwrite64` (vector I/O variants)**
 
