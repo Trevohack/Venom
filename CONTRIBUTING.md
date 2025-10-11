@@ -1,11 +1,10 @@
 
-# CONTRIBUTING
+# CONTRIBUTING 
 
 Thank you for your interest in contributing to **Venom**. This document explains how to report issues, propose changes, and submit code in a way that keeps the project healthy, auditable, and safe for everyone.
 
 ---
 
----
 
 ## Purpose & scope
 
@@ -80,5 +79,16 @@ Venom/
 ## Coding standards
 
 * Language: C for kernel components, Python/Go/JS/Bash for tooling/docs as applicable.
-* Naming: prefer clear, non-ambiguous names. Avoid content that intentionally obfuscates malicious intent.
+* Naming: prefer clear, non-ambiguous names.
 * Comments: explain *why* (design rationale) not only *what*.
+* For logging follow the logging system implemented by Venom (`TLOG_*` instead of `printk`)
+
+
+| Symbol | Level | Description |
+|--------|-------|-------------|
+| ✓ | TLOG_INF | Normal operations, successful hooks |
+| ⚠ | TLOG_WARN | Suspicious activity detected |
+| ✗ | TLOG_ERROR | Hook failures, errors |
+| ☠ | TLOG_CRIT | Critical failures, security breaches |
+
+## Thank You! 
