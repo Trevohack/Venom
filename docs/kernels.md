@@ -25,7 +25,3 @@
 * Always record exact kernel version string (`uname -a`) and `dmesg` output when analyzing a host.
 * For testing, use kernels close to the target (same major, vendor patches, and CONFIG set).
 * When comparing behavior across systems, prefer behavioral signals (missing sockets, failed module ops) over relying solely on symbol names.
-
----
-
-**One-line blurb:** Kernel matters — major versions and distro patches change internals and behavior. For Venom, assume modern 6.x semantics.
