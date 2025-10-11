@@ -1,8 +1,12 @@
-#ifndef DEFEND_H
-#define DEFEND_H
+#ifndef FILE_PROTECTION_H
+#define FILE_PROTECTION_H
 
-
+#include <linux/fs_struct.h>
+#include <linux/path.h>
+#include <linux/dcache.h>
+#include <linux/mount.h>
 #include "../include/headers.h"
+
 
 
 static asmlinkage long (*orig_openat)(const struct pt_regs *regs);
@@ -31,6 +35,7 @@ static const char *sensitive_paths[] = {
     "/proc/kcore",
     "/sys/firmware",
     "/var/log/kern",
+    "/var/log/audit",
     NULL
 };
 
@@ -100,7 +105,7 @@ notrace static void log_process_context(const char *action, const char *path) {
     struct fs_struct *fs = current->fs;
     spin_lock(&fs->lock);
     pwd = fs->pwd;
-    path_get(&pwd); 
+    path_get(&pwd);   // increment refcount to be safe
     spin_unlock(&fs->lock);
 
     cwd_ptr = d_path(&pwd, cwd, sizeof(cwd));
@@ -292,4 +297,3 @@ call_original:
 }
 
 #endif 
-
