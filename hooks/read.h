@@ -52,6 +52,7 @@ notrace static int custos_read(const char *name) {
     return 0;
 }
 
+/*
 notrace static char *get_file_path(int fd, char *buf, size_t size) {
     struct file *file;
     char *path = NULL;
@@ -64,6 +65,7 @@ notrace static char *get_file_path(int fd, char *buf, size_t size) {
     
     return IS_ERR(path) ? NULL : path;
 }
+*/
 
 
 notrace static void sanitize_kallsyms(char *buf, size_t len) {
@@ -199,3 +201,4 @@ notrace static asmlinkage ssize_t hooked_pread64(const struct pt_regs *regs) {
 
 
 #endif 
+
