@@ -1,11 +1,24 @@
 
-# Venom Rootkit Docs
+<div align="center"> 
+  <img src="https://i.postimg.cc/zDLzpWTx/venom-docs.png" alt="banner" style="max-width:100%; border-radius:12px;"/> 
+</div>
+
+<h1 align="center">Venom Docs</h1>
+
+<div align="center">
+  <strong>Docs • Guide • Install</strong><br>
+  <b><i>A Linux Kernel Module</i></b> 
+</div>
+
 
 ## What is Venom?
 
 Venom is a kernel-level rootkit that operates at ring 0 basically the deepest level of your Linux system. It hooks into syscalls (system calls) to monitor, hide, and protect things. Think of it like having a secret agent living in your kernel that can see everything and hide whatever you want.
 
-**Important:** This is for educational purposes and blue team defense training. Don't be evil with it.
+Current version: `V4.2` 
+
+> [!Important]
+> This is for educational purposes. Don't be evil with it. 
 
 --- 
 
