@@ -1,6 +1,6 @@
 
 <div align="center"> 
-  <img src="https://i.postimg.cc/zDLzpWTx/venom-docs.png" alt="banner" style="max-width:100%; border-radius:12px;"/> 
+  <img src="https://i.postimg.cc/wjxL10sc/venom-docs.png" alt="banner" style="max-width:100%; border-radius:12px;"/> 
 </div>
 
 <h1 align="center">Venom Docs</h1>
@@ -179,15 +179,12 @@ This hooks the functions that display `/proc/net/tcp` and `/proc/net/udp`. When 
 
 **Example:**
 ```bash
-# Blue team server running
 python3 server.py --port 8443
 
-# Attacker looks for it
 netstat -tulpn | grep 8443    # Shows nothing
 ss -tulpn | grep 8443          # Shows nothing
 tcpdump -i any port 8443      # Captures nothing
 
-# But connections work fine
 curl localhost:8443           # Works perfectly
 ```
 
