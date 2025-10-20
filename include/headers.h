@@ -34,6 +34,7 @@
 #include <linux/netdevice.h>
 #include <linux/capability.h>
 #include <linux/ptrace.h>
+#include <linux/prctl.h> 
 
 #define BUFFER_SIZE 4096
 #define MAX_PATH_LEN 256
