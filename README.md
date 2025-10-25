@@ -32,6 +32,9 @@
 * **Mount blocking** — denies unwanted mounts/moves to keep things hidden.
 * **FS protection hooks** — hooks `openat`/`renameat`/`unlinkat` to guard critical files.
 * **Socket logging** — logs new sockets (watch outbound channels).
+* **Blocks `ptrace` and `prctl`** — anti-debugging
+* **process_vm_readv / process_vm_writev monitoring** — observe inter-process memory read/write attempts
+* **Hides metadata** - metadata of the files will not be shown to protect the rootkit
 
 
 ## Installation
@@ -41,7 +44,7 @@ git clone https://github.com/Trevohack/Venom
 cd Venom
 make
 insmod venom.ko
-```
+``` 
 
 - And let the venom spread 
 
