@@ -41,12 +41,8 @@ Here's where things get interesting. Normal rootkits log to `dmesg` which is stu
 
 **Reading the logs:**
 ```bash
-# Plain text view
 sudo cat /var/tmp/.X11-cache
-
-# Or use the fancy colorized viewer
-python3 view_logs.py /var/tmp/.X11-cache
-```
+``` 
 
 The viewer shows:
 - ✓ Green for INFO (normal operations)
