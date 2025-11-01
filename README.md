@@ -7,8 +7,12 @@
 <div align="center">
   <strong>A poison that sleeps in the kernel’s veins</strong><br>
   <b><i>A Linux Kernel Module</i></b> 
-  <br> <br> 
-  <img alt="Static Badge" src="https://img.shields.io/static/v1?label=Venom&message=Ascendancy&labelColor=000000&color=FFFFFF&style=for-the-badge"> 
+  <br><br>
+  <img alt="Venom Ascendancy" src="https://img.shields.io/static/v1?label=Venom&message=Ascendancy&labelColor=000000&color=FFFFFF&style=for-the-badge&logo=linux&logoColor=ff66cc">
+  <img alt="Platform" src="https://img.shields.io/static/v1?label=Platform&message=Linux&labelColor=000000&color=FFFFFF&style=for-the-badge&logo=linux&logoColor=ff66cc">
+  <img alt="Language" src="https://img.shields.io/static/v1?label=Made%20in&message=C&labelColor=000000&color=FFFFFF&style=for-the-badge&logo=c&logoColor=ff66cc">
+  <img alt="Architecture" src="https://img.shields.io/static/v1?label=x64&message=Supported&labelColor=000000&color=FFFFFF&style=for-the-badge&logo=amd&logoColor=ff66cc">
+  <img alt="Status" src="https://img.shields.io/static/v1?label=Tested&message=True&labelColor=000000&color=FFFFFF&style=for-the-badge&logo=checkmarx&logoColor=ff66cc">
 </div>
 
 --- 
