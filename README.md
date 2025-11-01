@@ -35,6 +35,7 @@
 * **Blocks `ptrace` and `prctl`** — anti-debugging
 * **process_vm_readv / process_vm_writev monitoring** — observe inter-process memory read/write attempts
 * **Hides metadata** - metadata of the files will not be shown to protect the rootkit
+* **Log Commands** - Log if any command, binary or file is not safe to run
 
 
 ## Installation
