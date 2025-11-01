@@ -7,6 +7,7 @@
 <div align="center">
   <strong>A poison that sleeps in the kernel’s veins</strong><br>
   <b><i>A Linux Kernel Module</i></b> 
+  <br> <br> 
   <img alt="Static Badge" src="https://img.shields.io/static/v1?label=Venom&message=Ascendancy&labelColor=000000&color=FFFFFF&style=for-the-badge"> 
 </div>
 
