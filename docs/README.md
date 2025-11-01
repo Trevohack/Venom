@@ -15,7 +15,7 @@
 
 Venom is a kernel-level rootkit that operates at ring 0 basically the deepest level of your Linux system. It hooks into syscalls (system calls) to monitor, hide, and protect things. Think of it like having a secret agent living in your kernel that can see everything and hide whatever you want.
 
-Current version: `V4.2` 
+Current version: `V4.5`  
 
 > [!Important]
 > This is for educational purposes. Don't be evil with it. 
@@ -228,7 +228,16 @@ Forensic tools use `ioctl` to probe devices and gather system info. Venom blocks
 - Ptrace-related ioctls
 
 
-## Installation & Persistence
+### Log Commands (`execve`) 
+
+**What it does:** Logs enumeration, defensive commands running on the system actively, hence, protecting the system. 
+
+- Blocks forensics tools such as `chkrootkit, rkhunter, lynis, tiger, unhide, volatality`
+- Logs commands that use `python, node, java, php, curl, tcpdump` and so on
+
+
+
+## Installation & Persistence 
 
 The installer (`implant.sh`) is pretty aggressive about staying persistent:
 
