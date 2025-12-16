@@ -1,5 +1,5 @@
 <div align="center"> 
-  <img src="https://i.postimg.cc/wBzfJZYW/venom.png" alt="banner" style="max-width:100%; border-radius:12px;"/> 
+  <img src="https://i.postimg.cc/1tYmfFbx/venom.png" alt="banner" style="max-width:100%; border-radius:12px;"/> 
 </div>
 
 <h1 align="center">Venom</h1>
